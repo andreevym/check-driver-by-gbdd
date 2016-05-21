@@ -12,19 +12,23 @@ public class Main {
     private static final String PHPSESS_ID = "PHPSESSID";
 
     public static void main(String[] args) throws IOException {
-        /*String phpsessId = mainRequest();
+        /*
+        String phpsessId = mainRequest();
         if (phpsessId == null) {
             System.out.println("ERROR");
             return;
         }
 
-        saveImage(phpsessId, "new.jpg");*/
+        saveImage(phpsessId, "new.jpg");
+        */
 
-        clientRequest("11111111111111111111", "37072", "floevoi757tbh7fohp75l27f12");
+        clientDriverRequest("2222222222","2016-05-05", "25929", "462ekoe06rjnftbiraip2hidh4");
+        // Ответы
+        //1. Ответ от сервера БД получен. Записей не найдено.
     }
 
     private static String mainRequest() throws IOException {
-        URL url = new URL("http://www.gibdd.ru/check/auto/");
+        URL url = new URL("http://www.gibdd.ru/check/driver/");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);
@@ -67,26 +71,29 @@ public class Main {
         }
     }
 
-    private static void clientRequest(String vin, String captchaWord, String phpsessid) throws IOException {
-        String client = "http://www.gibdd.ru/proxy/check/auto/2.0/client.php";
+    private static void clientDriverRequest(String num, String date, String captchaWord, String phpsessid) throws IOException {
+        String client = "http://www.gibdd.ru/proxy/check/driver/2.0/client.php";
         URL url = new URL(client);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);
         urlConnection.setRequestProperty("X-Compress", "0");
-        urlConnection.setRequestProperty("Referer", "http://www.gibdd.ru/check/auto/");
+        urlConnection.setRequestProperty("Referer", "http://www.gibdd.ru/check/driver/");
         urlConnection.setRequestProperty("Host", "www.gibdd.ru");
-        urlConnection.setRequestProperty("Accept", "image/webp,image/*,*/*;q=0.8");
-        urlConnection.setRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
+        urlConnection.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+        urlConnection.setRequestProperty("Accept-Encoding", "gzip, deflate");
         urlConnection.setRequestProperty("Accept-Language", "ru,en-US;q=0.8,en;q=0.6");
+        urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         urlConnection.setRequestProperty("Connection", "keep-alive");
+        urlConnection.setRequestProperty("X-Csrf-Token", "20e09767aae4066db98837d68f5a91c4");
+        urlConnection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
         String cookie = String.format("PHPSESSID=%s; BITRIX_SM_IP_REGKOD=77; BITRIX_SM_REGKOD=00; BITRIX_SM_METOD=GEO;", phpsessid);
         urlConnection.setRequestProperty("Cookie", cookie);
 
         // Send post request
         urlConnection.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-        String urlParameters = String.format("vin=%s&captchaWord=%s&captchaCode=", vin, captchaWord);
+        String urlParameters = String.format("num=%s&date=%s&code=&word=%s", num, date, captchaWord);
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
@@ -135,7 +142,7 @@ public class Main {
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);
         urlConnection.setRequestProperty("X-Compress", "0");
-        urlConnection.setRequestProperty("Referer", "http://www.gibdd.ru/check/auto/");
+        urlConnection.setRequestProperty("Referer", "http://www.gibdd.ru/check/driver/");
         urlConnection.setRequestProperty("Host", "www.gibdd.ru");
         urlConnection.setRequestProperty("Accept", "image/webp,image/*,*/*;q=0.8");
         urlConnection.setRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
